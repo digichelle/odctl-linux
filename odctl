@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# odctl - OneDrive service control for Linux
+# Copyright © 2026 Michelle Catherine Marcó
+# MIT License: https://opensource.org/license/MIT
+
+# Get name of script (because it might not be odctl)
+ScriptName=$(basename $0)
+
+# Function to display help
+PrintUsage() {
+    echo "$ScriptName - OneDrive service control for Linux"
+    echo "Usage: $ScriptName COMMAND"
+    echo "Commands:"
+    echo "    help      Display this help"
+    echo "    log       Display service log"
+    echo "    status    Display service status"
+    echo "    start     Start service"
+    echo "    stop      Stop service"
+    echo "    restart   Restart service"
+}
+
+# Run specified command
+case $1 in
+
+    help | -h | --help)
+        PrintUsage
+        ;;
+
+    log)
+        clear
+        echo "Press Ctrl + C to terminate"
+        journalctl --user-unit=onedrive -f
+        ;;
+
+    status)
+        systemctl --user status onedrive
+        ;;
+
+    start)
+        systemctl --user start onedrive
+        ;;
+
+    stop)
+        systemctl --user stop onedrive
+        ;;
+
+    restart)
+        systemctl --user restart onedrive
+        ;;
+
+    *)
+        echo "Error: Invalid command, or no command specified" >&2
+        PrintUsage
+        ;;
+
+esac
